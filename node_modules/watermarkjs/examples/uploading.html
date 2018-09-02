@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>watermark.js - watermarks in the browser</title>
+  <script src="/scripts/watermark.js"></script>
+  <script src="/scripts/upload.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Josefin+Slab|Maven+Pro' rel='stylesheet' type='text/css'>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/bootstrap-theme.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/default.min.css">
+</head>
+
+<body>
+  <div class="container">
+
+    <h1 class="text-center"><a href="/">watermark.js</a></h1>
+    <nav>
+      <ul>
+        <li><a href="/images.html">images</a></li>
+        <li class="separator">-</li>
+        <li><a href="/text.html">text</a></li>
+        <li class="separator">-</li>
+        <li><a href="#">uploading</a></li>
+        <li class="separator">-</li>
+        <li><a href="pooling.html">pooling</a></li>
+        <li class="separator">-</li>
+        <li><a href="docs.html">documentation</a></li>
+      </ul>
+    </nav>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <p class="lead">
+          It would be pretty handy to upload a watermarked image once generated. Doing so in the client is a
+          great idea, especially if you are uncertain about image library support in a hosting environment. JavaScript is
+          decent at doing things concurrently as well, so you can even make your application snappier by letting the client
+          upload multiple images concurrently instead of a hosting environment that may or may not support such things.
+        </p>
+
+        <p class="lead">
+          The form below allows you to generate a watermarked image and upload it to <a href="http://aws.amazon.com/s3/" target="__blank">Amazon S3</a>. The form expects
+          a an access key id, a policy, and a signature. If you want an easy tool for generating the policy and signature, you can check out <a href="https://github.com/brianium/policy-signer" target="__blank">policy-signer</a>.
+          More info on policy documents can be found <a href="https://aws.amazon.com/articles/1434#policydocument" target="__blank">here</a>.
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <form action="" id="uploadForm" method="POST" style="margin-top: 45px;">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <span class="btn btn-primary btn-file">
+                Browse&hellip; <input type="file" id="target">
+              </span>
+            </span>
+            <input type="text" class="form-control" readonly>
+          </div>
+          <span class="help-block">
+            Select the image to watermark
+          </span>
+          <div class="input-group">
+            <span class="input-group-btn">
+              <span id="watermark-button" type="button" class="btn btn-primary btn-file" disabled>
+                Browse&hellip; <input type="file" id="watermark">
+              </span>
+            </span>
+            <input type="text" class="form-control" id="watermark-name" readonly>
+          </div>
+          <span class="help-block">
+            Select the watermark image
+          </span>
+          <div class="input-group">
+            <h3>Position</h3>
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="radio">
+                  <label><input type="radio" name="position" value="lowerRight" checked disabled>Lower Right</label>
+                </div>
+                <div class="radio">
+                  <label><input type="radio" name="position" value="lowerLeft" disabled>Lower Left</label>
+                </div>
+                <div class="radio">
+                  <label><input type="radio" name="position" value="upperRight" disabled>Upper Right</label>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="radio">
+                  <label><input type="radio" name="position" value="upperLeft" disabled>Upper Left</label>
+                </div>
+                <div class="radio">
+                  <label><input type="radio" name="position" value="center" disabled>Center</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>Amazon S3 Info</h3>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Access Key ID" id="accessKeyId" disabled />
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Policy" id="policy" disabled />
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Signature" id="signature" disabled />
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Bucket" id="bucket" disabled />
+          </div>
+
+          <button id="upload" type="submit" class="btn btn-default" disabled>Upload</button>
+
+          <div class="progress" id="progress" style="margin-top: 20px; visibility: hidden;">
+            <div class="progress-bar progress-bar-success progress-bar-striped" style="width: 0%">
+            </div>
+          </div>
+          <p id="complete" style="display: none;">
+            upload complete!
+          </p>
+          <p id="error" style="display: none;">
+            there was an error uploading
+          </p>
+
+        </form>
+      </div>
+      <div class="col-md-offset-1 col-md-7" id="preview">
+        <h2 class="text" style="margin-top:0">Preview</h2>
+      </div>
+    </div>
+</body>
+
+</html>
