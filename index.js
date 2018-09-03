@@ -75,28 +75,24 @@ bot.on('photo', msg => {
 
     download(fileDownloadUrl, './images/downloadedImage.png', function() {
       console.log('done');
-      gm('./images/logo.jpg')
-        .resize(msg.photo[2].width, msg.photo[2].height)
-        .write('./images/logoModified.png', function(err) {
-          console.log('error', err);
-          gm('./images/downloadedImage.png')
-            // .resize(msg.photo[2].width, msg.photo[2].height)
-            // .monochrome()
-            .composite('./images/logoModified.png')
-            .dissolve('20')
-            .write('./images/watermarkedImage.png', function(err) {
-              console.log('error', err);
 
-              if (!err) console.log('done gm');
-              promise = bot.sendPhoto(id, './images/watermarkedImage.png', {
-                fileName: 'watermarkedImage.png'
-              });
-              return promise.catch(error => {
-                console.log(error);
-                // Send an error
-                bot.sendMessage(id, `An error ${error} occurred, try again.`);
-              });
-            });
+      gm('./images/downloadedImage.png')
+        // .resize(msg.photo[2].width, msg.photo[2].height)
+        // .monochrome()
+        .composite('./images/logo.jpg')
+        .dissolve('20')
+        .write('./images/watermarkedImage.png', function(err) {
+          console.log('error', err);
+
+          if (!err) console.log('done gm');
+          promise = bot.sendPhoto(id, './images/watermarkedImage.png', {
+            fileName: 'watermarkedImage.png'
+          });
+          return promise.catch(error => {
+            console.log(error);
+            // Send an error
+            bot.sendMessage(id, `An error ${error} occurred, try again.`);
+          });
         });
     });
   });
