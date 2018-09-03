@@ -1,48 +1,48 @@
 {
-    "name": "alien-wolf-3d-vision-watermark",
-    "version": "1.0",
-    "description": "",
-    "main": "lib/telebot.js",
-    "engines": {
-        "node": ">= 6.0.0"
-    },
-    "dependencies": {
-        "cloudinary": "^1.11.0",
-        "dynamic-watermark": "^1.0.0",
-        "fs": "0.0.1-security",
-        "gm": "^1.23.1",
-        "image-watermark": "0.0.7",
-        "request": "^2.88.0",
-        "telebot": "^1.2.6",
-        "watermarkjs": "^2.0.0"
-    },
-    "devDependencies": {
-        "ava": "^0.19.1",
-        "eslint": "^3.19.0",
-        "nodemon": "^1.18.4"
-    },
-    "scripts": {
-        "test": "./node_modules/.bin/ava test/index.js",
-        "lint": "./node_modules/.bin/eslint **/*.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/mullwar/telebot.git"
-    },
-    "keywords": [
-        "bot",
-        "api",
-        "wrapper",
-        "telebot",
-        "telegram",
-        "telegram api",
-        "telegram bot",
-        "telegram bot api"
-    ],
-    "author": "Carlos Ramart <carlos.ramart@gmail.com>",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://gitlab.com/CharlieRa/watermark-telegram-bot"
-    },
-    "homepage": "https://gitlab.com/CharlieRa/watermark-telegram-bot"
+  "name": "alien-wolf-3d-vision-watermark",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/telebot.js",
+  "engines": {
+    "node": ">= 6.0.0"
+  },
+  "dependencies": {
+    "cloudinary": "^1.11.0",
+    "dynamic-watermark": "^1.0.0",
+    "fs": "0.0.1-security",
+    "gm": "^1.23.1",
+    "image-watermark": "0.0.7",
+    "request": "^2.88.0",
+    "telebot": "^1.2.6",
+    "watermarkjs": "^2.0.0"
+  },
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "eslint": "^3.19.0",
+    "nodemon": "^1.18.4"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/ava test/index.js",
+    "lint": "./node_modules/.bin/eslint **/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mullwar/telebot.git"
+  },
+  "keywords": [
+    "bot",
+    "api",
+    "wrapper",
+    "telebot",
+    "telegram",
+    "telegram api",
+    "telegram bot",
+    "telegram bot api"
+  ],
+  "author": "Carlos Ramart <carlos.ramart@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/CharlieRa/watermark-telegram-bot"
+  },
+  "homepage": "https://gitlab.com/CharlieRa/watermark-telegram-bot"
 }
