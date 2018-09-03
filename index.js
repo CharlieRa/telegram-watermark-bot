@@ -24,11 +24,6 @@ const download = function(uri, filename, callback) {
   });
 };
 
-let getFileUrl =
-  'https://api.telegram.org/bot666293876:AAGOH_Lw2x7QFGHwCqgG8fsm466sUeysoVM/getFile?file_id=';
-
-let fileDownloadUrl =
-  'https://api.telegram.org/file/bot666293876:AAGOH_Lw2x7QFGHwCqgG8fsm466sUeysoVM/';
 // Command keyboard
 const replyMarkup = bot.keyboard([['/start']], { resize: true, once: false });
 
@@ -47,6 +42,11 @@ bot.on(['/start', '/help'], function(msg) {
 });
 
 bot.on('photo', msg => {
+  let getFileUrl =
+    'https://api.telegram.org/bot666293876:AAGOH_Lw2x7QFGHwCqgG8fsm466sUeysoVM/getFile?file_id=';
+
+  let fileDownloadUrl =
+    'https://api.telegram.org/file/bot666293876:AAGOH_Lw2x7QFGHwCqgG8fsm466sUeysoVM/';
   let id = msg.chat.id;
   bot.sendMessage(
     id,
