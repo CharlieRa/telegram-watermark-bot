@@ -56,13 +56,13 @@ bot.on('photo', msg => {
     const result = JSON.parse(body);
     fileDownloadUlr = fileDownloadUlr + result.result.file_path;
 
-    download(fileDownloadUlr, './images/downloadedImage.jpg', function() {
+    download(fileDownloadUlr, './images/downloadedImage.png', function() {
       console.log('done');
 
-      gm('./images/downloadedImage.jpg')
+      gm('./images/downloadedImage.png')
         .composite('./images/logo.jpg')
         .dissolve('90%')
-        .write('./images/watermarkedImage.jpg', function(err) {
+        .write('./images/watermarkedImage.png', function(err) {
           console.log('error', err);
 
           if (!err) console.log('done gm');
