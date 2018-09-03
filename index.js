@@ -78,7 +78,7 @@ bot.on('photo', msg => {
 
       gm('./images/downloadedImage.png')
         .resize(msg.photo[2].width, msg.photo[2].height)
-        .monochrome()
+        // .monochrome()
         .composite('./images/logo.jpg')
         .dissolve('20')
         .write('./images/watermarkedImage.png', function(err) {
