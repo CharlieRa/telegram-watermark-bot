@@ -80,7 +80,7 @@ bot.on('photo', msg => {
         // .monochrome()
         .composite('./images/logo.jpg')
         .resize(msg.photo[2].width, msg.photo[2].height)
-        .dissolve('20')
+        .dissolve('10')
         .write('./images/watermarkedImage.png', function(err) {
           console.log('error', err);
 
