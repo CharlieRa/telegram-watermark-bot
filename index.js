@@ -3,6 +3,16 @@ const TeleBot = require('telebot');
 const gm = require('gm').subClass({ imageMagick: true });
 const fs = require('fs');
 const bot = new TeleBot('666293876:AAGOH_Lw2x7QFGHwCqgG8fsm466sUeysoVM');
+const express = require('express');
+// const path = require('path')
+const PORT = process.env.PORT || 5000;
+
+express()
+  // .use(express.static(path.join(__dirname, 'public')))
+  // .set('views', path.join(__dirname, 'views'))
+  // .set('view engine', 'ejs')
+  .get('/', (req, res) => res.send(JSON.stringify({ a: 1 }, null, 3)))
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 const download = function(uri, filename, callback) {
   request.head(uri, function(err, res, body) {
