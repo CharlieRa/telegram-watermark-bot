@@ -17,7 +17,7 @@ const download = function(uri, filename, callback) {
 let getFileUrl =
   'https://api.telegram.org/bot666293876:AAGOH_Lw2x7QFGHwCqgG8fsm466sUeysoVM/getFile?file_id=';
 
-let fileDownloadUlr =
+let fileDownloadUrl =
   'https://api.telegram.org/file/bot666293876:AAGOH_Lw2x7QFGHwCqgG8fsm466sUeysoVM/';
 // Command keyboard
 const replyMarkup = bot.keyboard([['/start']], { resize: true, once: false });
@@ -54,23 +54,24 @@ bot.on('photo', msg => {
     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
     console.log('body:', JSON.parse(body)); // Print the HTML for the Google homepage.
     const result = JSON.parse(body);
-    fileDownloadUlr = fileDownloadUlr + result.result.file_path;
+    fileDownloadUrl = fileDownloadUrl + result.result.file_path;
+    console.log(fileDownloadUrl);
 
-    download(fileDownloadUlr, './images/downloadedImage.png', function() {
+    download(fileDownloadUrl, './images/downloadedImage.png', function() {
       console.log('done');
 
       gm('./images/downloadedImage.png')
         .composite('./images/logo.jpg')
-        .dissolve('90%')
+        .dissolve('12')
         .write('./images/watermarkedImage.png', function(err) {
           console.log('error', err);
 
           if (!err) console.log('done gm');
-          promise = bot.sendPhoto(id, 'watermarkedImage.jpg', {
-            fileName: 'images/watermarkedImage.jpg'
+          promise = bot.sendPhoto(id, './images/watermarkedImage.png', {
+            fileName: 'watermarkedImage.png'
           });
           return promise.catch(error => {
-            console.log('[error]', error);
+            console.log(error);
             // Send an error
             bot.sendMessage(id, `An error ${error} occurred, try again.`);
           });
