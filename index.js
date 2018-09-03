@@ -1,11 +1,8 @@
 const request = require('request');
 const TeleBot = require('telebot');
-// const watermark = require("image-watermark");
 const gm = require('gm').subClass({ imageMagick: true });
-const watermark = require('dynamic-watermark');
 const fs = require('fs');
 const bot = new TeleBot('666293876:AAGOH_Lw2x7QFGHwCqgG8fsm466sUeysoVM');
-const cloudinary = require('cloudinary');
 
 const download = function(uri, filename, callback) {
   request.head(uri, function(err, res, body) {
@@ -59,94 +56,26 @@ bot.on('photo', msg => {
     const result = JSON.parse(body);
     fileDownloadUlr = fileDownloadUlr + result.result.file_path;
 
-    download(fileDownloadUlr, 'image.png', function() {
+    download(fileDownloadUlr, './images/downloadedImage.jpg', function() {
       console.log('done');
 
-      gm('watermark.png')
-        .composite('logo.jpg')
+      gm('./images/downloadedImage.jpg')
+        .composite('./images/logo.jpg')
         .dissolve('90%')
-        // .watermark('50x50')
-        // .blackThreshold(0, 0, 0, 10)
-        //   .sepia()
-        // .monochrome()
-        // .operator('Opacity', 'Assign', '80%')
-        .write('./outputgm.png', function(err) {
+        .write('./images/watermarkedImage.jpg', function(err) {
           console.log('error', err);
 
           if (!err) console.log('done gm');
-          // var optionsImageWatermark = {
-          //   type: 'image',
-          //   source: 'output.png',
-          //   logo: 'outputgm.png',
-          //   destination: 'output.png',
-          //   position: {
-          //     logoX: 0,
-          //     logoY: 0,
-          //     logoHeight: msg.photo[2].height,
-          //     logoWidth: msg.photo[2].width
-          //   }
-          // };
-          // This is optional if you have provided text Watermark
-          //optionsImageWatermark or optionsTextWatermark
-          // watermark.embed(optionsImageWatermark, function(status) {
-          //Do what you want to do here
-          // console.log(status);
-          promise = bot.sendPhoto(id, 'outputgm.png', {
-            fileName: 'outputgm.png'
+          promise = bot.sendPhoto(id, 'watermarkedImage.jpg', {
+            fileName: 'images/watermarkedImage.jpg'
           });
           return promise.catch(error => {
             console.log('[error]', error);
             // Send an error
-            bot.sendMessage(id, `😿 An error ${error} occurred, try again.`);
+            bot.sendMessage(id, `An error ${error} occurred, try again.`);
           });
-          // });
         });
-      // const options = {
-      //     'text': 'sample watermark',
-      //     'color': 'rgb(154, 50, 46)'
-      // };
-      // watermark.embedWatermark('image.png', options);
-
-      // promise = bot.sendPhoto(id, "watermark.png", {
-      //     fileName: "watermark.png",
-      // });
-
-      // promise = bot.sendPhoto(id, "watermark.png", {
-      //   fileName: "watermark.png",
-      // });
-
-      // Send "uploading photo" action
-      // bot.sendAction(id, 'upload_photo');
     });
-  });
-});
-
-// On command "kitty" or "kittygif"
-bot.on(['/kitty', '/kittygif'], function(msg) {
-  let promise;
-  let id = msg.chat.id;
-  let cmd = msg.text.split(' ')[0];
-
-  // Photo or gif?
-  if (cmd == '/kitty') {
-    promise = bot.sendPhoto(id, API + 'jpg', {
-      fileName: 'kitty.jpg',
-      serverDownload: true
-    });
-  } else {
-    promise = bot.sendDocument(id, API + 'gif#', {
-      fileName: 'kitty.gif',
-      serverDownload: true
-    });
-  }
-
-  // Send "uploading photo" action
-  bot.sendAction(id, 'upload_photo');
-
-  return promise.catch(error => {
-    console.log('[error]', error);
-    // Send an error
-    bot.sendMessage(id, `😿 An error ${error} occurred, try again.`);
   });
 });
 

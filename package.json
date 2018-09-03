@@ -7,14 +7,10 @@
     "node": ">= 6.0.0"
   },
   "dependencies": {
-    "cloudinary": "^1.11.0",
-    "dynamic-watermark": "^1.0.0",
     "fs": "0.0.1-security",
     "gm": "^1.23.1",
-    "image-watermark": "0.0.7",
     "request": "^2.88.0",
-    "telebot": "^1.2.6",
-    "watermarkjs": "^2.0.0"
+    "telebot": "^1.2.6"
   },
   "devDependencies": {
     "ava": "^0.19.1",
