@@ -64,6 +64,12 @@ bot.on('photo', msg => {
     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
     console.log('body:', JSON.parse(body)); // Print the HTML for the Google homepage.
     const result = JSON.parse(body);
+    if (result.ok === false) {
+      return bot.sendMessage(
+        id,
+        `There is a error adding the watermark, try again please.`
+      );
+    }
     fileDownloadUrl = fileDownloadUrl + result.result.file_path;
     console.log(fileDownloadUrl);
 
