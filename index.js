@@ -2,7 +2,8 @@ const request = require('request');
 const TeleBot = require('telebot');
 const gm = require('gm').subClass({ imageMagick: true });
 const fs = require('fs');
-const bot = new TeleBot('666293876:AAGOH_Lw2x7QFGHwCqgG8fsm466sUeysoVM');
+const telegramBot = require('./config/telegram');
+const bot = new TeleBot(telegramBot.token);
 const express = require('express');
 // const path = require('path')
 const PORT = process.env.PORT || 5000;
@@ -43,10 +44,10 @@ bot.on(['/start', '/help'], function(msg) {
 
 bot.on('photo', msg => {
   let getFileUrl =
-    'https://api.telegram.org/bot666293876:AAGOH_Lw2x7QFGHwCqgG8fsm466sUeysoVM/getFile?file_id=';
+    'https://api.telegram.org/bot' + telegramBot.token + '/getFile?file_id=';
 
   let fileDownloadUrl =
-    'https://api.telegram.org/file/bot666293876:AAGOH_Lw2x7QFGHwCqgG8fsm466sUeysoVM/';
+    'https://api.telegram.org/file/bot' + telegramBot.token + '/';
   let id = msg.chat.id;
   bot.sendMessage(
     id,
