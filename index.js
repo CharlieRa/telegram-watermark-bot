@@ -3,6 +3,7 @@ const TeleBot = require('telebot');
 const gm = require('gm').subClass({ imageMagick: true });
 const fs = require('fs');
 const telegramBot = require('./config/telegram');
+const express = require('express');
 const bot = new TeleBot({
   token: telegramBot.token,
   polling: {
@@ -11,8 +12,6 @@ const bot = new TeleBot({
     retryTimeout: 3000 // Optional. Reconnecting timeout (in ms).
   }
 });
-const express = require('express');
-// const path = require('path')
 const PORT = process.env.PORT || 5000;
 
 express()
@@ -24,8 +23,6 @@ express()
 
 const download = function(uri, filename, callback) {
   request.head(uri, function(err, res, body) {
-    // console.log('content-type:', res.headers['content-type']);
-    // console.log('content-length:', res.headers['content-length']);
     request(uri)
       .pipe(fs.createWriteStream(filename))
       .on('close', callback);
