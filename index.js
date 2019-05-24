@@ -3,7 +3,14 @@ const TeleBot = require('telebot');
 const gm = require('gm').subClass({ imageMagick: true });
 const fs = require('fs');
 const telegramBot = require('./config/telegram');
-const bot = new TeleBot(telegramBot.token);
+const bot = new TeleBot({
+  token: telegramBot.token,
+  polling: {
+    // Optional. Use polling.
+    interval: 500, // Optional. How often check updates (in ms).
+    retryTimeout: 3000 // Optional. Reconnecting timeout (in ms).
+  }
+});
 const express = require('express');
 // const path = require('path')
 const PORT = process.env.PORT || 5000;
@@ -17,13 +24,14 @@ express()
 
 const download = function(uri, filename, callback) {
   request.head(uri, function(err, res, body) {
-    console.log('content-type:', res.headers['content-type']);
-    console.log('content-length:', res.headers['content-length']);
+    // console.log('content-type:', res.headers['content-type']);
+    // console.log('content-length:', res.headers['content-length']);
     request(uri)
       .pipe(fs.createWriteStream(filename))
       .on('close', callback);
   });
 };
+// 48839
 
 // Command keyboard
 const replyMarkup = bot.keyboard([['/start']], { resize: true, once: false });
@@ -53,45 +61,79 @@ bot.on('photo', msg => {
     id,
     `Adding the Alien Wolf 3D Vision Watermark wait a few seconds...`
   );
-  console.log(msg);
+  // console.log(msg);
   if (!msg.photo) {
     return;
   }
-  getFileUrl = getFileUrl + msg.photo[2].file_id;
-  console.log(getFileUrl);
+  let lastPhotoIndex = 0;
+  lastPhotoIndex = msg.photo.length - 1;
+  const imageFileId = msg.photo[lastPhotoIndex].file_id;
+  getFileUrl = getFileUrl + imageFileId;
+  // console.log(getFileUrl);
 
   request(getFileUrl, function(error, response, body) {
-    console.log('error:', error); // Print the error if one occurred
-    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-    console.log('body:', JSON.parse(body)); // Print the HTML for the Google homepage.
+    if (error) {
+      console.log('An Error: ', error); // Print the error if one occurred
+      bot.sendMessage(id, `Error to add the watermark, try again please.`);
+      return;
+    }
+    // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+    // console.log('body:', JSON.parse(body));
     const result = JSON.parse(body);
-    if (result.ok === false) {
-      return bot.sendMessage(
+    if (result.ok == false) {
+      bot.sendMessage(
         id,
         `There is a error adding the watermark, try again please.`
       );
+      return;
     }
     fileDownloadUrl = fileDownloadUrl + result.result.file_path;
-    console.log(fileDownloadUrl);
+    // console.log(fileDownloadUrl);
+    const downloadedImagePath =
+      './images/downloadedImage' + imageFileId + '.png';
+    // console.log(downloadedImagePath);
 
-    download(fileDownloadUrl, './images/downloadedImage.png', function() {
-      console.log('done');
+    const watermarkedImagePath =
+      './images/watermarkedImage' + imageFileId + '.png';
 
-      gm('./images/downloadedImage.png')
-        // .monochrome()
-        .composite('./images/logo.jpg')
-        .resize(msg.photo[2].width, msg.photo[2].height)
-        .dissolve('15')
-        .write('./images/watermarkedImage.png', function(err) {
-          console.log('error', err);
+    const logoColor = './images/logo-tp.png';
+    const logoBlackAndWhite = './images/logo-tp-bw.png';
+    const logo =
+      msg.from && msg.from.username == 'Fx_Hassan_elhadedy'
+        ? logoColor
+        : logoBlackAndWhite;
 
-          if (!err) console.log('done gm');
-          promise = bot.sendPhoto(id, './images/watermarkedImage.png', {
+    // console.log(logo);
+
+    download(fileDownloadUrl, downloadedImagePath, () => {
+      gm(downloadedImagePath)
+        .composite(logo)
+        .resize(
+          msg.photo[lastPhotoIndex].width,
+          msg.photo[lastPhotoIndex].height
+        )
+        // .dissolve('15')
+        .write(watermarkedImagePath, err => {
+          if (err) {
+            // console.log('Error on composite:', err);
+            bot.sendMessage(
+              id,
+              `There is a error adding the watermark, try again please.`
+            );
+            return;
+          }
+
+          promise = bot.sendPhoto(id, watermarkedImagePath, {
             fileName: 'watermarkedImage.png'
           });
+
+          promise.then(() => {
+            fs.unlinkSync(watermarkedImagePath);
+            fs.unlinkSync(downloadedImagePath);
+          });
+
           return promise.catch(error => {
-            console.log(error);
-            // Send an error
+            // console.log('Error send image: ', error);
             bot.sendMessage(id, `An error ${error} occurred, try again.`);
           });
         });
