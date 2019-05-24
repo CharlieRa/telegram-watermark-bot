@@ -5,7 +5,7 @@ const fs = require('fs');
 const telegramBot = require('./config/telegram');
 const express = require('express');
 const bot = new TeleBot({
-  token: telegramBot.token,
+  token: telegramBot.tokenProduction,
   polling: {
     // Optional. Use polling.
     interval: 500, // Optional. How often check updates (in ms).
