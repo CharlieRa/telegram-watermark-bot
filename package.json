@@ -7,15 +7,15 @@
     "node": ">= 6.0.0"
   },
   "dependencies": {
-    "express": "^4.17.0",
+    "express": "^4.17.1",
     "fs": "0.0.2",
     "gm": "^1.23.1",
-    "request": "^2.88.0",
-    "telebot": "^1.2.6"
+    "request": "^2.88.2",
+    "telebot": "^1.4.1"
   },
   "devDependencies": {
-    "ava": "^1.4.1",
-    "eslint": "^5.16.0"
+    "ava": "^3.11.1",
+    "eslint": "^7.7.0"
   },
   "scripts": {
     "start": "node ./index.js",
