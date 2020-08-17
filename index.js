@@ -8,7 +8,7 @@ const dotenv = require('dotenv');
 const config = dotenv.config();
 
 let token;
-if (!config) {
+if (!config.parsed) {
     token = process.env.token;
 } else {
     token = config.parsed.token;
