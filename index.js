@@ -4,7 +4,8 @@ const gm = require('gm').subClass({imageMagick: true});
 const fs = require('fs');
 const http = require('http');
 const express = require('express');
-const config = require('./config/config');
+const dotenv = require('dotenv');
+const config = dotenv.config();
 
 setInterval(function () {
     http.get('http://whispering-everglades-65542.herokuapp.com/');
@@ -12,7 +13,7 @@ setInterval(function () {
 }, 200000); // every 5 minutes (300000)
 
 const bot = new TeleBot({
-    token: config.token,
+    token: config.parsed.token,
     polling: {
         // Optional. Use polling.
         interval: 500, // Optional. How often check updates (in ms).
@@ -59,10 +60,10 @@ bot.on(['/start', '/help'], function (msg) {
 
 bot.on('photo', msg => {
     let getFileUrl =
-        'https://api.telegram.org/bot' + config.token + '/getFile?file_id=';
+        'https://api.telegram.org/bot' + config.parsed.token + '/getFile?file_id=';
 
     let fileDownloadUrl =
-        'https://api.telegram.org/file/bot' + config.token + '/';
+        'https://api.telegram.org/file/bot' + config.parsed.token + '/';
     let id = msg.chat.id;
     bot.sendMessage(
         id,

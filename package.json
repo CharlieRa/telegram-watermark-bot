@@ -11,7 +11,8 @@
     "fs": "0.0.2",
     "gm": "^1.23.1",
     "request": "^2.88.2",
-    "telebot": "^1.4.1"
+    "telebot": "^1.4.1",
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {
     "ava": "^3.11.1",
